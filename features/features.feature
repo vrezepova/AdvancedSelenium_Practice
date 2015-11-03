@@ -96,5 +96,7 @@ Scenario: File upload
     Then Provide username
     Then Upload the files. Task 2
 
-
+  Scenario: Task 2 - Randomize upload
+    Then Go to "http://fineuploader.com/demos"
+    Then Create a loop which will grab 3 random pics and upload them one by one
 

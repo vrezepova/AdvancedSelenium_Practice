@@ -137,29 +137,29 @@ end
 
 
 Then /^Print cars if they are not NEW LISTING on first 4 pages$/ do
-  page_counter = $driver.find_element(:xpath, "//td[@class = 'pages']/a[contains(@aria-label, 'Selected')]")
-  while not page_counter.text == '6' do
-    puts page_counter.text
-    listing = $driver.find_elements(:xpath, "//h3/a")
+  page_counter = $driver.find_elements(:xpath, "//td[@class = 'pages']/a[contains(@aria-label, 'Selected')]")
+  while not page_counter.text == '5' do
+    # puts page_counter.text
+    listing = $driver.find_elements(:xpath, "//a[@class = 'vip']")
     for i in listing do
-      if i.text.include? 'New listing'
+      if i.text.include? 'NEW'
       puts 'OMG'
       else puts i.text
     end
     nextpage = $driver.find_element(:xpath, "//a[@class='gspr next']")
     nextpage.click
-    page_counter = $driver.find_element(:xpath, "//td[@class = 'pages']/a[contains(@aria-label, 'Selected')]")
+    page_counter = $driver.find_elements(:xpath, "//td[@class = 'pages']/a[contains(@aria-label, 'Selected')]")
   end
   end
   end
 
   Then /^Print cars if they are not NEW LISTING on first 4 pages UNLESS$/ do
     page_counter = $driver.find_element(:xpath, "//td[@class = 'pages']/a[contains(@aria-label, 'Selected')]")
-    while not page_counter.text == '6' do
+    while not page_counter.text == '5' do
        puts page_counter.text
        listing = $driver.find_elements(:xpath, "//h3/a")
       for i in listing do
-         unless i.text.include? 'New listing'
+         unless i.text.include? 'NEW'
           puts i.text
          end
         nextpage = $driver.find_element(:xpath, "//a[@class='gspr next']")
@@ -368,6 +368,18 @@ puts numeric_cards_ary
 #    end
 #   end
   end
+
+
+
+Then /^Create a loop which will grab 3 random pics and upload them one by one$/ do
+  images = [File.join( Dir.pwd, '/Users/victoriarezepova/Desktop/Test/1.png'), File.join(Dir.pwd, '/Users/victoriarezepova/Desktop/Test/5.png'), File.join(Dir.pwd, '/Users/victoriarezepova/Desktop/Test/2.png'), File.join(Dir.pwd, '/Users/victoriarezepova/Desktop/Test/4.png'), File.join(Dir.pwd, '/Users/victoriarezepova/Desktop/Test/3.png')]
+  for i in 1..3 do
+    upload_input = $driver.find_element(:xpath, "(//div[@class = 'qq-upload-button-selector qq-upload-button']/input[@type= 'file'])[2]")
+    upload_input.send_keys images.sample
+  end
+end
+
+
 
 Then /^Provide username$/ do
   username = $driver.find_element(:xpath, "//input[@name = 'userName']")
