@@ -314,16 +314,20 @@ end
 end
 
 Then /^DD to the Bin$/ do
-  items = $driver.find_element(:xpath, "//a[@draggable = 'true']")
+  items = $driver.find_elements(:xpath, "//ul/li/a[@draggable = 'true']")
   # over = $driver.find_element(:xpath, "//div[@class = 'over']")
   trash = $driver.find_element(:xpath, "//div[@id = 'bin']")
   for i in items do
-    $driver.action.click_and_hold(items).perform
+    $driver.action.drag_and_drop(i, trash).perform
     sleep 5
     #$driver.action.move_to(over).perform
-    $driver.action.move_to(trash).release.perform
+    # $driver.action.move_to(trash).release.perform
   end
-
+  items = $driver.find_elements(:xpath, "//ul/li/a[@draggable = 'true']")
+  if items.empty?
+    puts 'All is in Trash'
+    else puts 'Something went wrong..'
+  end
 end
 
 
