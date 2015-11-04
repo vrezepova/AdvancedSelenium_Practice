@@ -4,9 +4,14 @@ Feature:  Advanced Selenium
     Then This is Array
     Then This is Array of Arrays
 
+    Scenario: Print array
+    Then Print array
 
  Scenario: Hash
    Then This is Hash example
+
+ Scenario:  Recollect data from array using MAP function
+   Then Recollect data with map function
 
  Scenario: For Loop
    Then For loops task 1
@@ -61,7 +66,7 @@ Scenario: Print car titles of a particular make
 
  Scenario: Regular task: select values from each drop-down
    Then Go to "http://www.ebay.com/sch/Cars-Trucks-/6001/i.html"
-   Then From "Make" select item and print it
+#   Then From "Make" select item and print it
 
   Scenario: Hybrid inputs
     Then Go to "http://www.google.com"
@@ -99,4 +104,23 @@ Scenario: File upload
   Scenario: Task 2 - Randomize upload
     Then Go to "http://fineuploader.com/demos"
     Then Create a loop which will grab 3 random pics and upload them one by one
+
+
+  Scenario: Click on Slice of a pie chart
+      Then Go to "http://www.jqueryrain.com/?UZQw0Fop"
+      Then Switch to frame
+      Then Click the slice
+
+  Scenario: Task 1 lesson 5 SVG tooltips
+      Then Go to "http://bl.ocks.org/Caged/6476579"
+      Then Switch to frame
+      Then SVG Tooltips R
+
+
+  Scenario: SVG Cars by country Production chart
+      Then Go to "http://www.taucharts.com/"
+      Then Cars in Finland
+
+
+
 

@@ -16,10 +16,31 @@ Then /^This is Array of Arrays$/ do
   # given example will return 'bee'
 end
 
+
+Then /^Print array$/ do
+  array = ['dog', 'cat', 'horse','ant', 'wasp', 'bee', 'frog', 'hippo', 'hare', 'rabbit']
+  for i in array do
+    puts 'I have a %s' %i
+  end
+# for the range of elements; prints out 5 random!!! elements
+  for i in 1..5 do
+    puts array.sample
+  end
+end
+
 Then /^This is Hash example$/ do
   hash_example = {dog: "white", cat: "black", bird: "yellow"}
 
   puts hash_example[:dog]
+end
+
+
+Then /^Recollect data with map function$/ do
+  #array == elements
+  #array = array.map {|x| x.text}
+  $driver.get "http://www.ebay.com/sch/Cars-Trucks-/6001/i.html"
+  array = $driver.find_elements :xpath => "//a[@class = 'vip']"
+  puts array.map {|x| x.text}
 end
 
 # Then /^While loop with break$/ do
@@ -171,11 +192,11 @@ Then /^Print cars if they are not NEW LISTING on first 4 pages$/ do
 
     Then /^Print cars if they are Ford on first 5 pages UNLESS$/ do
       page_counter = $driver.find_element(:xpath, "//td[@class = 'pages']/a[contains(@aria-label, 'Selected')]")
-      while not page_counter.text == '3' do
-        # puts page_counter.text
+      while not page_counter.text == '10' do
+        puts page_counter.text
         listing = $driver.find_elements :xpath => "//h3[@class='lvtitle']/a"
         for i in listing do
-          if i.text.include? "Ford"
+          if i.text.include? 'Ford'
             puts i.text
           end
           nextpage = $driver.find_element(:xpath, "//a[@class='gspr next']")
@@ -228,16 +249,16 @@ Then /^From "([^"]*)" select "([^"]*)"$/ do |dd, item|
   sleep 2
 end
 
-Then /^From "([^"]*)" select item and print it$/ do |dd|
-  dropd = $driver.find_element(:xpath, "//select[@name = '"+dd+"']")
-  item = ['Acura', 'Alfa Romeo', 'American Motors', 'Aston Martin', 'Audi']
-  variable = $dropdown.new(dropd)
-  variable.select_by(:text, i)
-  for i in item do
-    puts item
-  end
-  sleep 2
-end
+# Then /^From "([^"]*)" select item and print it$/ do |dd|
+#   dropd = $driver.find_element(:xpath, "//select[@name = '"+dd+"']")
+#   item = ['Acura', 'Alfa Romeo', 'American Motors', 'Aston Martin', 'Audi']
+#   variable = $dropdown.new(dropd)
+#   variable.select_by(:text, i)
+#   for i in item do
+#     puts item
+#   end
+#   sleep 2
+# end
 
 Then /^Cascade dd selection$/ do
   selects = $driver.find_elements(:xpath, "//select")
@@ -380,7 +401,6 @@ Then /^Create a loop which will grab 3 random pics and upload them one by one$/ 
 end
 
 
-
 Then /^Provide username$/ do
   username = $driver.find_element(:xpath, "//input[@name = 'userName']")
   username.send_keys("MyUserName ")
@@ -396,3 +416,96 @@ file_input = $driver.find_element(:xpath, "//input[@type='file']")
 file_input.send_keys final_path
 
 end
+
+#SVG = Scalable Vector Graphics
+# regular xpath: "//canvas[@class = '']//..."
+# SVG special xpath requires this syntax with name() funcrion: "*[name() = 'canvas'][@class = '']//"
+
+
+#iframe - the 'window"" for new url inside the HTML page
+#$driver.switch_to.frame()
+# ():
+# 1. index (frame1, frame2 -> like in array)
+# 2. ID
+# 3. Xpath to frame:  define a variable with xpath  frame = $friver.find_element*(:xpath: "//")
+#  also we can find the source link so to skip switching frames
+
+Then /^Switch to frame$/ do
+$driver.switch_to.frame(0)
+sleep 2
+end
+
+Then /^Click the slice/ do
+slice = $driver.find_element(:xpath, "//div[@class = 'chart pie']//*[name() = 'path'][@id = 'path2']")
+slice.click
+end
+
+# Scenario: SVG Car Production chart
+# How many cars produced in Finland?
+# 1. Find the xpath to the Country using var
+# 2. Click ot Mouse move to it
+# 3. Read tooltip
+# We have two elements which have nothing in common
+# Skipping the frame..
+#  1. Find the xpath to the element Country
+#  2. Find relation in a position in arrays
+#  3. By knowing the relation - define the Xpath to the value
+
+Then /^Cars in ([^"]*)/ do |target|
+ #1 Find the Country
+  country = $driver.find_elements(:xpath, "//div[@id = 'c4']//*[name() = 'svg']//*[name() = 'g' and @class = 'y axis axis_rooty']//*[name() = 'text']")
+  country = country.map {|x| x.text}
+  puts country
+ #2 Find the position inside the array
+  #two ways:
+  #  not cool one:
+    counter = 0
+    for i in country do
+    if i == target
+    break
+      else
+      counter +=1
+    end
+      #puts counter
+
+  # # better one:
+  #     #array.index(target)
+  #   country.index(target)
+  #
+  #  # hash method:
+  # hash = Hash[country.map.with_index.to_a]
+  # hash[target]
+    end
+  link_to_the_chart_by_country = $driver.find_element(:xpath, "//div[@id = 'c4']//*[name() = 'svg']//*[name() = 'g' and @class = 'layer_root']//*[name() = 'rect']["+(counter+1).to_s+"]")
+
+  link_to_the_chart_by_country.click
+
+  amount_cars = $driver.find_element(:xpath, "(//div[@class = 'graphical-report__tooltip__list__elem'])[8]").text
+  puts target+' produced ' +amount_cars+ ' last year '
+
+  end
+
+
+Then /^SVG Tooltips ([^"]*)$/ do |legend|
+axis = $driver.find_elements(:xpath, "//*[name() = 'svg']//*[name() = 'g' and @class = 'x axis']//*[name() = 'text' and @class = 'tick']")
+# axis = axis.map {|x| x.text}
+  puts axis.text
+ counter = 0
+  for i in axis do
+    if axis.text == legend
+      break
+    else
+      counter +=1
+    end
+    puts counter
+  end
+
+  link_to_the_chart = $driver.find_elements(:xpath, "//["+(counter+1).to_s+"]")
+  link_to_the_chart.click
+
+tooltip = $driver.find_element(:xpath, "//")
+
+  puts legend + 'equals '+ tooltip
+  end
+
+
