@@ -112,14 +112,18 @@ Scenario: File upload
       Then Click the slice
 
   Scenario: Task 1 lesson 5 SVG tooltips
-      Then Go to "http://bl.ocks.org/Caged/6476579"
-      Then Switch to frame
-      Then SVG Tooltips R
+    #if running without iframe involved:
+    Then Go to "http://bl.ocks.org/Caged/raw/6476579/7d0158c142ca6bdbb085132c9daa59855f3552cb/"
+    Then SVG Tooltips D
 
 
   Scenario: SVG Cars by country Production chart
       Then Go to "http://www.taucharts.com/"
       Then Cars in Finland
+
+  Scenario: HW lesson 5 Output low/mid/high percentage for each state
+    Then Go to "http://bl.ocks.org/NPashaP/raw/96447623ef4d342ee09b/4aa55e294cf06411f34001b52dbfcb7d551a7726/"
+    Then Output low, mid, high percentage for each state
 
 
 

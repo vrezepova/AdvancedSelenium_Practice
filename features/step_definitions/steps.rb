@@ -433,6 +433,7 @@ end
 Then /^Switch to frame$/ do
 $driver.switch_to.frame(0)
 sleep 2
+$driver.switch_to.default_content
 end
 
 Then /^Click the slice/ do
@@ -485,14 +486,25 @@ Then /^Cars in ([^"]*)/ do |target|
 
   end
 
+# Then /^Switch to SVG frame$/ do
+#   frame = $driver.find_element(:xpath, "//iframe[@scrolling = 'no']")
+#   $driver.switch_to.frame(0)
+#   sleep 2
+# end
+
 
 Then /^SVG Tooltips ([^"]*)$/ do |legend|
-axis = $driver.find_elements(:xpath, "//*[name() = 'svg']//*[name() = 'g' and @class = 'x axis']//*[name() = 'text' and @class = 'tick']")
-# axis = axis.map {|x| x.text}
-  puts axis.text
+  # $driver.get "http://bl.ocks.org/Caged/6476579"
+  # frame = $driver.find_element(:xpath, "//iframe[@scrolling = 'no']")
+  # $driver.switch_to.frame(frame)
+  # sleep 2
+
+axis = $driver.find_elements(:xpath, "//*[name() = 'svg']/*[name() = 'g' and @transform]//*[name() = 'g' and @class = 'x axis']//*[name() = 'g' and @class = 'tick']//*[name() = 'text']")
+axis = axis.map {|x| x.text}
+  puts axis
  counter = 0
   for i in axis do
-    if axis.text == legend
+    if i == legend
       break
     else
       counter +=1
@@ -500,12 +512,53 @@ axis = $driver.find_elements(:xpath, "//*[name() = 'svg']//*[name() = 'g' and @c
     puts counter
   end
 
-  link_to_the_chart = $driver.find_elements(:xpath, "//["+(counter+1).to_s+"]")
-  link_to_the_chart.click
 
-tooltip = $driver.find_element(:xpath, "//")
+  chart = $driver.find_elements(:xpath, "//*[name() = 'svg']//*[name() = 'g' and @transform]//*[name() = 'rect']["+(counter+1).to_s+"]")
+  # $driver.action.move_to(link_to_the_chart).perform
+  chart.click
+  # mouse move:
+  # el = driver.find_element(:id, "some_id")
+  # driver.action.move_to(el).perform
+
+  puts chart
+
+ # $driver.mouse.move_to(link_to_the_chart)
+ #  link_to_the_chart.click
+ #
+
+tooltip = $driver.find_elements(:xpath, "//div[@class = 'd3-tip n']//span/text()")
 
   puts legend + 'equals '+ tooltip
   end
 
 
+# http://bl.ocks.org/Caged/raw/6476579/7d0158c142ca6bdbb085132c9daa59855f3552cb/
+
+# "//div[@class = 'd3-tip n']//span/text()"
+
+Then /^Output low, mid, high percentage for each state$/ do
+states = $driver.find_elements(:xpath, "//*[name() = 'svg']/*[name() = 'g' and @transform]//*[name() = 'g' and @class = 'x axis']//*[name() = 'g' and @class = 'tick']//*[name() = 'text']")
+states = states.map {|x| x.text}
+  puts states
+
+  counter = 0
+  for i in states do
+    puts
+    counter +=1
+    puts counter
+  end
+
+chart = $driver.find_elements(:xpath, "//*[name() = 'svg']//*[name() = 'g' and @transform]//*[name() = 'g' and @class = 'bar']["+(counter+1).to_s+"]")
+  for i in chart
+    i.click
+    low_per = $driver.find_element(:xpath, "//table[@class = 'legend']//tr[1]//td[@class = 'legendPerc']]")
+    mid_per = $driver.find_element(:xpath, "//table[@class = 'legend']//tr[2]//td[@class = 'legendPerc']")
+    high_per = $driver.find_element(:xpath, "//table[@class = 'legend']//tr[3]//td[@class = 'legendPerc']")
+
+    puts low_per.text
+    puts mid_per.text
+    puts high_per.text
+
+  end
+
+end
