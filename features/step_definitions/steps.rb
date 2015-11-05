@@ -527,7 +527,7 @@ Then /^Output low, mid, high percentage for each state$/ do
   states = states.map {|x| x.text}
 
   counter = 0
-  for i in states
+  for i in states do
       puts 'State: '+ i
 
       chart = $driver.find_element(:xpath, "//*[name() = 'svg']//*[name() = 'g' and @transform]//*[name() = 'g' and @class = 'bar']//*[name() = 'rect']["+(counter+1).to_s+"]")
@@ -541,10 +541,10 @@ Then /^Output low, mid, high percentage for each state$/ do
       puts 'Mid % : ' + mid_per.text
       puts 'High % : ' + high_per.text
 
-    #end
-    counter += 1
   end
-end
+  counter += 1
+  end
+
 # "//*[name() = 'svg']//*[name() = 'g' and @transform]//*[name() = 'g' and @class = 'bar'][1]"
 # ["+(counter+1).to_s+"]
 
