@@ -534,31 +534,30 @@ tooltip = $driver.find_elements(:xpath, "//div[@class = 'd3-tip n']//span/text()
 
 # http://bl.ocks.org/Caged/raw/6476579/7d0158c142ca6bdbb085132c9daa59855f3552cb/
 
-# "//div[@class = 'd3-tip n']//span/text()"
+
 
 Then /^Output low, mid, high percentage for each state$/ do
-states = $driver.find_elements(:xpath, "//*[name() = 'svg']/*[name() = 'g' and @transform]//*[name() = 'g' and @class = 'x axis']//*[name() = 'g' and @class = 'tick']//*[name() = 'text']")
-states = states.map {|x| x.text}
-  puts states
+
+  states = $driver.find_elements(:xpath, "//*[name() = 'svg']/*[name() = 'g' and @transform]//*[name() = 'g' and @class = 'x axis']//*[name() = 'g' and @class = 'tick']//*[name() = 'text']")
+  states = states.map {|x| x.text}
 
   counter = 0
   for i in states do
-    puts
-    counter +=1
-    puts counter
-  end
+puts i
+    chart = $driver.find_elements(:xpath, "//*[name() = 'svg']//*[name() = 'g' and @transform]//*[name() = 'g' and @class = 'bar']["+(counter+1).to_s+"]")
+    for i in chart
+      i.click
+      low_per = $driver.find_element(:xpath, "//table[@class = 'legend']//tr[1]//td[@class = 'legendPerc']")
+      mid_per = $driver.find_element(:xpath, "//table[@class = 'legend']//tr[2]//td[@class = 'legendPerc']")
+      high_per = $driver.find_element(:xpath, "//table[@class = 'legend']//tr[3]//td[@class = 'legendPerc']")
 
-chart = $driver.find_elements(:xpath, "//*[name() = 'svg']//*[name() = 'g' and @transform]//*[name() = 'g' and @class = 'bar']["+(counter+1).to_s+"]")
-  for i in chart
-    i.click
-    low_per = $driver.find_element(:xpath, "//table[@class = 'legend']//tr[1]//td[@class = 'legendPerc']]")
-    mid_per = $driver.find_element(:xpath, "//table[@class = 'legend']//tr[2]//td[@class = 'legendPerc']")
-    high_per = $driver.find_element(:xpath, "//table[@class = 'legend']//tr[3]//td[@class = 'legendPerc']")
 
-    puts low_per.text
-    puts mid_per.text
-    puts high_per.text
+      puts 'Low % : ' + low_per.text
+      puts 'Mid % : ' + mid_per.text
+      puts 'High % : ' + high_per.text
 
+    end
+    counter += 1
   end
 
 end
