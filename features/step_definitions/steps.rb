@@ -530,7 +530,7 @@ Then /^Output low, mid, high percentage for each state$/ do
   for i in states
       puts 'State: '+ i
 
-      chart = $driver.find_element(:xpath, "//*[name() = 'svg']//*[name() = 'g' and @transform]//*[name() = 'g' and @class = 'bar']["+(counter+1).to_s+"]")
+      chart = $driver.find_element(:xpath, "//*[name() = 'svg']//*[name() = 'g' and @transform]//*[name() = 'g' and @class = 'bar']//*[name() = 'rect']["+(counter+1).to_s+"]")
       chart.click
 
       low_per = $driver.find_element(:xpath, "//table[@class = 'legend']//tr[1]//td[@class = 'legendPerc']")
@@ -558,7 +558,7 @@ Then /^Output low, mid, high percentage for state ([^"]*)$/ do |st|
     if i == st
     puts 'State: '+ i
 
-    chart = $driver.find_element(:xpath, "//*[name() = 'svg']//*[name() = 'g' and @transform]//*[name() = 'g' and @class = 'bar']["+(counter+1).to_s+"]")
+    chart = $driver.find_element(:xpath, "//*[name() = 'svg']//*[name() = 'g' and @transform]//*[name() = 'g' and @class = 'bar']//*[name() = 'rect']["+(counter+1).to_s+"]")
     chart.click
 
     low_per = $driver.find_element(:xpath, "//table[@class = 'legend']//tr[1]//td[@class = 'legendPerc']")
