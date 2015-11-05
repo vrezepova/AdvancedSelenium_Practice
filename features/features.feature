@@ -125,6 +125,8 @@ Scenario: File upload
     Then Go to "http://bl.ocks.org/NPashaP/raw/96447623ef4d342ee09b/4aa55e294cf06411f34001b52dbfcb7d551a7726/"
     Then Output low, mid, high percentage for each state
 
-
+  Scenario: HW lesson 5 Output low/mid/high percentage for one state
+    Then Go to "http://bl.ocks.org/NPashaP/raw/96447623ef4d342ee09b/4aa55e294cf06411f34001b52dbfcb7d551a7726/"
+    Then Output low, mid, high percentage for state DE
 
 
