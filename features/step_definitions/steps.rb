@@ -433,7 +433,7 @@ end
 Then /^Switch to frame$/ do
 $driver.switch_to.frame(0)
 sleep 2
-$driver.switch_to.default_content
+#$driver.switch_to.default_content
 end
 
 Then /^Click the slice/ do
@@ -482,7 +482,7 @@ Then /^Cars in ([^"]*)/ do |target|
   link_to_the_chart_by_country.click
 
   amount_cars = $driver.find_element(:xpath, "(//div[@class = 'graphical-report__tooltip__list__elem'])[8]").text
-  puts target+' produced ' +amount_cars+ ' last year '
+  puts target+' produced ' +amount_cars+ ' cars last year '
 
   end
 
@@ -501,7 +501,7 @@ Then /^SVG Tooltips ([^"]*)$/ do |legend|
 
 axis = $driver.find_elements(:xpath, "//*[name() = 'svg']/*[name() = 'g' and @transform]//*[name() = 'g' and @class = 'x axis']//*[name() = 'g' and @class = 'tick']//*[name() = 'text']")
 axis = axis.map {|x| x.text}
-  puts axis
+  #puts axis
  counter = 0
   for i in axis do
     if i == legend
@@ -509,26 +509,20 @@ axis = axis.map {|x| x.text}
     else
       counter +=1
     end
-    puts counter
+    #puts counter
   end
 
-
-  chart = $driver.find_elements(:xpath, "//*[name() = 'svg']//*[name() = 'g' and @transform]//*[name() = 'rect']["+(counter+1).to_s+"]")
-  # $driver.action.move_to(link_to_the_chart).perform
+  chart = $driver.find_element(:xpath, "//*[name() = 'svg']//*[name() = 'g' and @transform]//*[name() = 'rect']["+(counter+1).to_s+"]")
   chart.click
+  # $driver.action.move_to(link_to_the_chart).perform
+
   # mouse move:
   # el = driver.find_element(:id, "some_id")
   # driver.action.move_to(el).perform
 
-  puts chart
+tooltip = $driver.find_element(:xpath, "//div[@class = 'd3-tip n']//span")
 
- # $driver.mouse.move_to(link_to_the_chart)
- #  link_to_the_chart.click
- #
-
-tooltip = $driver.find_elements(:xpath, "//div[@class = 'd3-tip n']//span/text()")
-
-  puts legend + 'equals '+ tooltip
+  puts legend + ' equals '+ tooltip.text
   end
 
 
@@ -542,15 +536,15 @@ Then /^Output low, mid, high percentage for each state$/ do
   states = states.map {|x| x.text}
 
   counter = 0
-  for i in states do
-puts i
-    chart = $driver.find_elements(:xpath, "//*[name() = 'svg']//*[name() = 'g' and @transform]//*[name() = 'g' and @class = 'bar']["+(counter+1).to_s+"]")
-    for i in chart
-      i.click
+  for i in states
+      puts 'State: '+ i
+    chart = $driver.find_elements(:xpath, "//*[name() = 'svg']//*[name() = 'g' and @transform]//*[name() = 'g' and @class = 'bar'][1]")
+    for element in chart
+
+     sleep 3
       low_per = $driver.find_element(:xpath, "//table[@class = 'legend']//tr[1]//td[@class = 'legendPerc']")
       mid_per = $driver.find_element(:xpath, "//table[@class = 'legend']//tr[2]//td[@class = 'legendPerc']")
       high_per = $driver.find_element(:xpath, "//table[@class = 'legend']//tr[3]//td[@class = 'legendPerc']")
-
 
       puts 'Low % : ' + low_per.text
       puts 'Mid % : ' + mid_per.text
@@ -561,3 +555,5 @@ puts i
   end
 
 end
+# "//*[name() = 'svg']//*[name() = 'g' and @transform]//*[name() = 'g' and @class = 'bar'][1]"
+# ["+(counter+1).to_s+"]
