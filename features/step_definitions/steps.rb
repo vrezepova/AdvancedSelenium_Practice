@@ -610,8 +610,32 @@ Then /^Find all the elements of the main menu$/ do
   end
   end
 
+Then /^Put the search word ([^"]*)in the search field/ do |word|
+search_field = $driver.find_element(:xpath, "//input[@id = 'twotabsearchtextbox']")
+  sleep 4
+search_field.send_keys "#{word}"
+  submit = $driver.find_element(:xpath, "//input[@value = 'Go']")
+  submit.click
+end
 
 
+Then /^Collect 5 star items with prime option$/ do
+  sleep 6
+  next_page = $driver.find_element :id => "pagnNextString"
+  while next_page.enabled? do
+    items = $driver.find_elements :xpath => "//div[@class = 's-item-container'][.//span[text() = 'Prime']][.//span[contains(text(), '5 out')]]//h2"
+    if items.count == 0
+      puts "No products with 5 stars found"
+      # raise "No products with 5 stars found"
+    else
+      puts items
+      puts items.map {|n| n.text}
+    end
+    next_page.click
+    sleep 10
+    next_page = $driver.find_element :id => "pagnNextString"
+  end
+end
 
 
 

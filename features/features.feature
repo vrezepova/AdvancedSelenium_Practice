@@ -137,3 +137,8 @@ Scenario: Test
 
   Scenario: Test2
     Then Find all the elements of the main menu
+
+ Scenario: Collect 5 stars items with prime option
+   Then Go to "http://www.amazon.com"
+   Then Put the search word Unicorn Pink Polka in the search field
+   Then Collect 5 star items with prime option
