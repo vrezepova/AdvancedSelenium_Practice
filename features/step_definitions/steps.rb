@@ -444,7 +444,7 @@ end
 # Scenario: SVG Car Production chart
 # How many cars produced in Finland?
 # 1. Find the xpath to the Country using var
-# 2. Click ot Mouse move to it
+# 2. Click or Mouse move to it
 # 3. Read tooltip
 # We have two elements which have nothing in common
 # Skipping the frame..
@@ -524,13 +524,15 @@ tooltip = $driver.find_element(:xpath, "//div[@class = 'd3-tip n']//span")
 Then /^Output low, mid, high percentage for each state$/ do
 
   states = $driver.find_elements(:xpath, "//*[name() = 'svg']/*[name() = 'g' and @transform]//*[name() = 'g' and @class = 'x axis']//*[name() = 'g' and @class = 'tick']//*[name() = 'text']")
-  states = states.map {|x| x.text}
-
+  # states = states.map {|x| x.text}
   counter = 0
+  #hash = Hash[states.map.with_index.to_a]
+  states.each_with_index do |item,index|
+
   for i in states do
       puts 'State: '+ i
 
-      chart = $driver.find_element(:xpath, "//*[name() = 'svg']//*[name() = 'g' and @transform]//*[name() = 'g' and @class = 'bar']//*[name() = 'rect']["+(counter+1).to_s+"]")
+      chart = $driver.find_element(:xpath, "//*[name() = 'svg']//*[name() = 'g' and @transform]//*[name() = 'g' and @class = 'bar']//*[name() = 'rect']")
       chart.click
 
       low_per = $driver.find_element(:xpath, "//table[@class = 'legend']//tr[1]//td[@class = 'legendPerc']")
@@ -543,6 +545,7 @@ Then /^Output low, mid, high percentage for each state$/ do
 
   end
   counter += 1
+  end
   end
 
 # "//*[name() = 'svg']//*[name() = 'g' and @transform]//*[name() = 'g' and @class = 'bar'][1]"
@@ -576,8 +579,36 @@ Then /^Output low, mid, high percentage for state ([^"]*)$/ do |st|
     counter += 1
   end
 
+  Then /^Find the elements of the main Nav menu ([^"]*)$/ do |x|
+    element = $driver.find_elements(:xpath, "//div[@class = 'container']//li[@class = 'dropdown']//a[contains(text(), '#{x}')]")
+    for i in element do
+      puts i.attribute("innerHTML")
+    end
+  end
 
+Then /^Find all the elements of the main Nav menu$/ do
+  element = $driver.find_elements(:xpath, "//div[@class = 'container']//li[@class = 'dropdown']//a")
+  for i in element do
+    puts i.attribute("innerHTML")
+  end
+end
 
+Then /^Find all the elements of the main menu$/ do
+  $driver.get "https://petsmart.com"
+  element = $driver.find_elements(:xpath, "//ul[@class = 'ws-common-list pet-main-nav']//li[contains(@class, 'ws-common-list-item pet-main-nav-item-level1')]//a")
+  for i in element do
+    puts i.text
+  end
+  menu = []
+
+  for i in element do
+   y =  i.text.to_s
+    if y.length >= 1
+      menu.push(y)
+  end
+  puts menu
+  end
+  end
 
 
 

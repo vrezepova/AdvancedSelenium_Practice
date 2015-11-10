@@ -130,3 +130,10 @@ Scenario: File upload
     Then Output low, mid, high percentage for state DE
 
 
+Scenario: Test
+  Then Go to "http://syapse.com/"
+  Then Find the elements of the main Nav menu Products
+  Then Find all the elements of the main Nav menu
+
+  Scenario: Test2
+    Then Find all the elements of the main menu
