@@ -1,7 +1,4 @@
-# After do
-#   $driver.close
-#   $driver.quit
-# end
+
 
 Then /^This is Array$/ do
   array_example = ['dog', 'ant', 'tree']
@@ -393,7 +390,7 @@ puts numeric_cards_ary
 
 
 Then /^Create a loop which will grab 3 random pics and upload them one by one$/ do
-  images = [File.join( Dir.pwd, '/Users/victoriarezepova/Desktop/Test/1.png'), File.join(Dir.pwd, '/Users/victoriarezepova/Desktop/Test/5.png'), File.join(Dir.pwd, '/Users/victoriarezepova/Desktop/Test/2.png'), File.join(Dir.pwd, '/Users/victoriarezepova/Desktop/Test/4.png'), File.join(Dir.pwd, '/Users/victoriarezepova/Desktop/Test/3.png')]
+  images = [File.join( Dir.pwd, '/AdvancedSelenium/TestFiles/1.png'), File.join(Dir.pwd, '/AdvancedSelenium/TestFiles/5.png'), File.join(Dir.pwd, '/AdvancedSelenium/TestFiles/2.png'), File.join(Dir.pwd, '/AdvancedSelenium/TestFiles/4.png'), File.join(Dir.pwd, '/AdvancedSelenium/TestFiles/3.png')]
   for i in 1..3 do
     upload_input = $driver.find_element(:xpath, "(//div[@class = 'qq-upload-button-selector qq-upload-button']/input[@type= 'file'])[2]")
     upload_input.send_keys images.sample
@@ -409,7 +406,7 @@ end
 
 Then /^Upload the files. Task 2$/ do
 # choose_button = $driver.find_element(:xpath, "//input[@type = 'file']").click
-file = '/Users/victoriarezepova/Desktop/out/File_1.doc'
+file = '/AdvancedSelenium/TestFiles/File_1.doc'
 final_path = File.join(Dir.pwd, file)
 puts final_path
 file_input = $driver.find_element(:xpath, "//input[@type='file']")
@@ -636,6 +633,134 @@ Then /^Collect 5 star items with prime option$/ do
     next_page = $driver.find_element :id => "pagnNextString"
   end
 end
+
+#Cucumber variables
+
+Then /^Click Blue button$/ do #red, green, etc.
+  btn = $driver.find_element :xpath => "//button[text() = 'Blue']"
+  btn.click
+end
+
+Then /^Click ([^"]*) button$/ do |colour|
+  btn = $driver.find_element :xpath => "//button[text() = '#{colour}']"
+  btn.click
+end
+
+
+
+Then /^Array sorting$/ do
+  prices = $driver.find_elements :xpath => "//path to prices"
+  array_sort_verification(prices)
+end
+
+
+#File Import
+
+
+Then /^Import txt or rtf file$/ do
+  file = '/TestFilesFolder/example.txt'
+
+  File.open((File.join(File.expand_path("..", Dir.pwd), file)), "r").each_line do |line|
+    puts 'Got it' if (line[/that one I was looking for/])
+  end
+
+end
+
+
+Then /^Import xls file$/ do
+  book = Spreadsheet.open 'Spreadsheet.xls'
+  ws = book.worksheet('Sheet1') # can use an index or worksheet name
+
+  ws.each do |row|
+    value1 = row[0]
+    value2 = row[1]
+  end
+  ws.each 5 do |row|
+    value1 = row[0]
+    value2 = row[1]
+  end
+
+     # Each row becomes an array, so each value could be called by array index. That means, in following example:
+     # Screen Shot 2015-08-20 at 4.45.14 PM
+
+    ws.each do |row|
+    login = row[0]
+    password = row[1]
+
+    #  you could avoid loops if you know the row with your information:
+
+    row_with_info = sheet1.row(4)
+    login = row_with_info[0]
+    password = row_with_info[1]
+    end
+
+  end
+
+
+  Then /^Lesson 6 Task 2: Working with excel$/ do
+    book = Spreadsheet.open '/Users/victoriarezepova/RubymineProjects/AdvancedSelenium/TestFiles/Creds.xls'
+    ws = book.worksheet('Sheet1')
+    login_field = $driver.find_element(:id, "email")
+    password_field = $driver.find_element(:id, "pass")
+
+    ws.each do |row|
+      login = row[0]
+      password = row|[2]
+      # puts login
+      puts password
+    end
+
+ #      login_field.send_keys 'login'
+ #    sleep 15
+ #      password_field.send_keys 'password'
+ #    sleep 15
+ #      submit = $driver.find_element(:id, "loginbutton")
+ #      submit.click
+ # if submit.count > 0
+ #   puts "Try again"
+ #   else puts "Login is successful"
+ #     end
+
+    end
+
+
+
+
+Then /^Lesson 6 Task 1: Reading through files$/ do
+  file1 = '/AdvancedSelenium/TestFiles/Sample_text1.txt'
+  file2 = '/AdvancedSelenium/TestFiles/Sample_text2.txt'
+  file3 = '/AdvancedSelenium/TestFiles/Sample_text3.txt'
+
+  File.open((File.join(File.expand_path("..", Dir.pwd), file1)), "r").each_line do |line|
+    puts file1, 'Got it' if (line[/This is the line of text I was looking for/])
+  end
+  File.open((File.join(File.expand_path("..", Dir.pwd), file2)), "r").each_line do |line|
+    puts file2, 'Got it' if (line[/This is the line of text I was looking for/])
+  end
+  File.open((File.join(File.expand_path("..", Dir.pwd), file3)), "r").each_line do |line|
+    puts file3, 'Got it' if (line[/This is the line of text I was looking for/])
+  end
+end
+
+Then /^Lesson 6 Task 1: Reading through files via array$/ do
+  file1 = '/AdvancedSelenium/TestFiles/Sample_text1.txt'
+  file2 = '/AdvancedSelenium/TestFiles/Sample_text2.txt'
+  file3 = '/AdvancedSelenium/TestFiles/Sample_text3.txt'
+  file4 = '/AdvancedSelenium/TestFiles/Sample_text4.txt'
+  file5 = '/AdvancedSelenium/TestFiles/Sample_text5.txt'
+
+  file = [file1, file2, file3]
+for i in file do
+  File.open((File.join(File.expand_path("..", Dir.pwd), i)), "r").each_line do |line|
+    if line[/This is the line of text I was looking for/]
+    puts i, "The file is allright!"
+     else raise 'The ' +i+' does not contain required information'
+  end
+end
+end
+  end
+
+
 
 
 

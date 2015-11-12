@@ -142,3 +142,12 @@ Scenario: Test
    Then Go to "http://www.amazon.com"
    Then Put the search word Unicorn green Polka Dot plaid in the search field
    Then Collect 5 star items with prime option
+
+
+  Scenario: Lesson 6 Task 1: Reading through files
+    Then Lesson 6 Task 1: Reading through files
+    Then Lesson 6 Task 1: Reading through files via array
+
+  Scenario: Lesson 6 Task 2: Working with excel
+    Then Go to "https://www.facebook.com"
+    Then Lesson 6 Task 2: Working with excel
