@@ -707,7 +707,7 @@ Then /^Import xls file$/ do
       login = row[0]
       password = row|[2]
       # puts login
-      puts password
+      # puts password
     end
 
  #      login_field.send_keys 'login'
@@ -716,6 +716,7 @@ Then /^Import xls file$/ do
  #    sleep 15
  #      submit = $driver.find_element(:id, "loginbutton")
  #      submit.click
+
  # if submit.count > 0
  #   puts "Try again"
  #   else puts "Login is successful"
