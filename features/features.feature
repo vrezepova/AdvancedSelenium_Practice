@@ -149,5 +149,5 @@ Scenario: Test
     Then Lesson 6 Task 1: Reading through files via array
 
   Scenario: Lesson 6 Task 2: Working with excel
-    Then Go to "https://www.facebook.com"
+#    Then Go to "https://www.facebook.com"
     Then Lesson 6 Task 2: Working with excel

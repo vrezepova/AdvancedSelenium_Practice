@@ -4,9 +4,9 @@ require 'cucumber'
 require 'spreadsheet'
 require 'gmail'
 
-# $driver = Selenium::WebDriver.for :firefox
+ $driver = Selenium::WebDriver.for :firefox
 # $driver = Selenium::WebDriver.for :chrome
-$driver = Selenium::WebDriver.for :safari
+# $driver = Selenium::WebDriver.for :safari
 $dropdown = Selenium::WebDriver:: Support:: Select
 
 

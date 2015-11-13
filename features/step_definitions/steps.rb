@@ -698,6 +698,7 @@ Then /^Import xls file$/ do
 
 
   Then /^Lesson 6 Task 2: Working with excel$/ do
+    $driver.get "https://www.facebook.com"
     book = Spreadsheet.open '/Users/victoriarezepova/RubymineProjects/AdvancedSelenium/TestFiles/Creds.xls'
     ws = book.worksheet('Sheet1')
     login_field = $driver.find_element(:id, "email")
@@ -705,23 +706,27 @@ Then /^Import xls file$/ do
 
     ws.each do |row|
       login = row[0]
-      password = row|[1]
-      # puts login
-      # puts password
+      password = row[1]
+        puts login
+        puts password
 
       login_field.send_keys login
-    sleep 15
+    sleep 5
       password_field.send_keys password
-    sleep 15
+    sleep 5
       submit = $driver.find_element(:id, "loginbutton")
       submit.click
+      sleep 5
 
+      # login_fail= $driver.find_element(:xpath, "//div[@class = 'fsl fwb fcb']")
        if submit.count > 0
          puts "Try again"
+         $driver.get "https://www.facebook.com"
        else puts "Login is successful"
      end
-    end
-    end
+     end
+  end
+
 
 
 
