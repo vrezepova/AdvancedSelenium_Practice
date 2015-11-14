@@ -3,6 +3,8 @@ require 'selenium-webdriver'
 require 'cucumber'
 require 'spreadsheet'
 require 'gmail'
+require 'net/imap'
+
 
  $driver = Selenium::WebDriver.for :firefox
 # $driver = Selenium::WebDriver.for :chrome

@@ -149,5 +149,23 @@ Scenario: Test
     Then Lesson 6 Task 1: Reading through files via array
 
   Scenario: Lesson 6 Task 2: Working with excel
-#    Then Go to "https://www.facebook.com"
     Then Lesson 6 Task 2: Working with excel
+
+
+  Scenario:  Gmail login
+      Then Log in
+
+  Scenario:  Gmail print read mails
+  Then Print read
+
+  Scenario:  Gmail registration link
+    Then Link from Gmail
+
+  Scenario: Remove Spam messages from Gmail box
+    Then Remove Spam messages from Gmail box
+
+  Scenario:  Send Gmail message
+    Then Then Send mail to "rezepova@gmail.com"
+
+  Scenario: Net Imap
+    Then Net Imap mail print

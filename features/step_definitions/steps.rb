@@ -695,11 +695,13 @@ Then /^Import xls file$/ do
     end
 
   end
-
+# '/Users/victoriarezepova/RubymineProjects/AdvancedSelenium/TestFiles/Creds.xls'
 
   Then /^Lesson 6 Task 2: Working with excel$/ do
     $driver.get "https://www.facebook.com"
-    book = Spreadsheet.open '/Users/victoriarezepova/RubymineProjects/AdvancedSelenium/TestFiles/Creds.xls'
+    file_xls = File.join(Dir.pwd,'/TestFiles/Creds.xls' )
+    book = Spreadsheet.open(file_xls)
+
     ws = book.worksheet('Sheet1')
     login_field = $driver.find_element(:id, "email")
     password_field = $driver.find_element(:id, "pass")
@@ -707,8 +709,8 @@ Then /^Import xls file$/ do
     ws.each do |row|
       login = row[0]
       password = row[1]
-        puts login
-        puts password
+        puts login, password
+
 
       login_field.send_keys login
     sleep 5
@@ -718,12 +720,12 @@ Then /^Import xls file$/ do
       submit.click
       sleep 5
 
-      # login_fail= $driver.find_element(:xpath, "//div[@class = 'fsl fwb fcb']")
-       if submit.count > 0
-         puts "Try again"
-         $driver.get "https://www.facebook.com"
-       else puts "Login is successful"
-     end
+     #   login_fail= $driver.find_element(:xpath, "//div[@class = 'fsl fwb fcb']")
+     #   if login_fail.displayed?
+     #     puts "Try again"
+     #     $driver.get "https://www.facebook.com"
+     #   else puts "Login is successful"
+     # end
      end
   end
 
@@ -765,6 +767,91 @@ end
 end
   end
 
+Then /^Log in$/ do
+  login = 'rezepova@gmail.com'
+  password = '***'
+  gmail = Gmail.connect(login, password)
+   puts gmail.logged_in?
+  puts gmail.inbox.count(:unread)
+  puts gmail.inbox.count(:read)
+
+  gmail.logout
+end
+
+Then /^Print read$/ do
+  login = 'rezepova@gmail.com'
+  password = '***'
+  gmail = Gmail.connect(login, password)
+  puts gmail.logged_in?
+
+  gmail.inbox.find(:unread).each do |mail|
+    text = mail.body.decoded
+    puts text
+  end
+  gmail.logout
+
+end
+
+Then /^Link from Gmail$/ do
+  login = 'rezepova@gmail.com'
+  password = '***'
+  gmail = Gmail.connect(login, password)
+  puts gmail.logged_in?
+
+  gmail.inbox.find(:read, :from => 'customercare@gotowebinar.com').each do |mail|
+    text = mail.body.decoded
+
+    registration_link = /<a>global.gotowebinar/m.match(text)[].gsub(/\s/, '')
+    puts text
+  end
+  gmail.logout
+
+end
+#[1]
+Then /^Remove Spam messages from Gmail box$/ do
+  login = 'rezepova@gmail.com'
+  password = '***'
+  gmail = Gmail.connect(login, password)
+  puts gmail.logged_in?
+
+  blacklist = ['spam@spam.com']
+  for i in blacklist
+  gmail.inbox.find(:unread, :from => i).each do |mail|
+    text = mail.delete!
+end
+  end
+  gmail.logout
+end
+
+Then /^Then Send mail to "([^"]*)"$/ do |address|
+  login = 'rezepova@gmail.com'
+  password = '***'
+  gmail = Gmail.connect(login, password)
+  puts gmail.logged_in?
+
+  gmail.deliver do
+    to address
+    subject 'wow, automated mail'
+    body 'some information'
+    # add_file file
+
+  end
+  gmail.logout
+end
+
+Then /^Net Imap mail print$/ do
+  login = 'rezepova@gmail.com'
+  password = '***'
+  imap = Net::IMAP.new('imap.gmail.com', 993, true)
+  imap.login(login, password)
+
+  imap.select('INBOX')
+  imap.search(['FROM', 'rezepova@gmail.com']).each do |mail|
+    text = imap.fetch(mail, 'RCF822')
+    puts text
+  end
+  imap.logout
+end
 
 
 
